@@ -44,7 +44,6 @@ $func = function ($val, $val_2) use ($link) {
 };
 $router->any("{$link}{val_2}/{val}/", $func);
 
-//var_dump($router);
 
 $func = function () {
 	echo "Вывод страницы по умолчанию";

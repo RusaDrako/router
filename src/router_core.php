@@ -41,23 +41,6 @@ class router_core {
 
 	/** Загрузка класса */
 	function __construct () {
-/*		if (isset($_SERVER['REQUEST_URI'])) {
-			$val_route = explode('?', $_SERVER['REQUEST_URI'])[0];
-			if ($val_route[-1] != '/' ) {
-				if (!isset($_SERVER['REDIRECT_URL'])) {
-					$val_route .= '/';
-				} else {
-					$val_route = $_SERVER['REDIRECT_URL'] . '/';
-				}
-			}
-			$this->arr_router = \explode('/', $val_route);
-		} else {
-			$this->arr_router = ['',''];
-			$val_route = '/';
-		}
-		$this->set_route($val_route);
-		$this->set_root_folder($_SERVER['DOCUMENT_ROOT']);
-		$this->set_method($_SERVER['REQUEST_METHOD']);/**/
 		$this->router_default = $this->arr_router_settings;
 		$this->add_default(false);
 	}
@@ -70,6 +53,16 @@ class router_core {
 	public function __destruct () {}
 
 
+
+
+	/** */
+	public function __debugInfo() {
+		return [
+			'arg_name' => $this->_arr_arg,
+			'routes' => $this->arr_router_settings,
+			'route_default' => $this->router_default,
+		];
+	}
 
 
 
@@ -156,7 +149,7 @@ class router_core {
 
 
 
-	/** Выводим список зарегиситрированных маршрутов
+	/** Выводит наименование уровня маршрута
 	 * @param int $num Номер уровня
 	 */
 	public function get_group($num = 1) {
@@ -171,21 +164,7 @@ class router_core {
 
 
 
-	/**- Выводим список зарегиситрированных маршрутов * /
-	public function get_set() {
-		echo '<h3>Зарегистрированные переменные</h3>';
-		print_r($this->_arr_arg);
-		echo '<h3>Зарегистрированные маршруты</h3>';
-		print_r($this->arr_router_settings);
-		echo '<h3>Зарегистрированные маршруты по умолчанию</h3>';
-		print_r($this->router_default);
-	}
-
-
-
-
-
-	/** Обработки текущего маршрута */
+	/** Обрабатывает текущий маршрут */
 	public function router() {
 		# Вывод информации по маршрутам
 		$argv = [];
@@ -251,6 +230,7 @@ class router_core {
 			$full_file_name = "{$this->root_folder}{$file_name}";
 			# Формируем имя класса
 			$class_name = '\\' . \str_replace('/', '\\', $_arr_r[0]);
+			# Если класс отсутстует - пытаемся загрузить
 			if (!\class_exists($class_name)) {
 				# Если файл отсутстует
 				if (!\file_exists($full_file_name)) {
@@ -279,15 +259,8 @@ class router_core {
 			$method = new \ReflectionMethod($class_name, $method_name);
 			# Формируем список аргументов функции
 			$argv = $this->_router_arg($argv, $method);
-			# Если cуществует метод вызова call
-/*-			if (\method_exists($class_name , 'call')) {
-				# Получаем объект через call
-				$obj_object = $class_name::call();
-			# Иначе
-			} else {/**/
-				# Создаём объект
-				$obj_object = new $class_name();
-//			}
+			# Создаём объект
+			$obj_object = new $class_name();
 			# Выполняем метод из контрольного маршрута с переданными аргументами
 			$content = $method->invokeArgs($obj_object, $argv);
 			return $content;
@@ -352,7 +325,7 @@ class router_core {
 
 
 
-	/** Задаём страницу по умолчанию
+	/** Задаёт страницу по умолчанию
 	 * @param mixed $action Связанное действие
 	 * @param string $type Тип REST
 	 */

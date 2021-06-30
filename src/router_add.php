@@ -38,12 +38,15 @@ class router_add extends router_core {
 
 
 
-	/** Маршрут для всех типов запросов */
-	public function any($mask, $action = null) {
+	/** Задаёт маршруты для всех типов REST
+	 * @param string $route_mask Маршрут (маска)
+	 * @param mixed $action Связанное действие
+	 */
+	public function any($route_mask, $action = null) {
 		# Проходим по массиву типов запросов
 		foreach($this->arr_router_settings as $k => $v) {
 			# Заносим обработчик маршрута
-			$this->add_router($k, $mask, $action);
+			$this->add_router($k, $route_mask, $action);
 		}
 	}
 
@@ -51,20 +54,26 @@ class router_add extends router_core {
 
 
 
-	/** Маршрут для GET */
-	public function get($mask, $action = null) {
+	/** Задаёт маршруты для GET
+	 * @param string $route_mask Маршрут (маска)
+	 * @param mixed $action Связанное действие
+	 */
+	public function get($route_mask, $action = null) {
 		# Заносим обработчик маршрута
-		$this->add_router('GET', $mask, $action);
+		$this->add_router('GET', $route_mask, $action);
 	}
 
 
 
 
 
-	/** Маршрут для POST */
-	public function post($mask, $action = null) {
+	/** Задаёт маршруты для POST
+	 * @param string $route_mask Маршрут (маска)
+	 * @param mixed $action Связанное действие
+	 */
+	public function post($route_mask, $action = null) {
 		# Заносим обработчик маршрута
-		$this->add_router('POST', $mask, $action);
+		$this->add_router('POST', $route_mask, $action);
 	}
 
 
