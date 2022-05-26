@@ -38,6 +38,19 @@ class router_add extends router_core {
 
 
 
+	/** Задаёт маршруты по умолчанию
+	 * @param mixed $action Связанное действие
+	 * @param string $type Тип REST
+	 */
+	public function default($action, string $type = '') {
+		# Заносим обработчик маршрута
+		$this->add_default($action, $type);
+	}
+
+
+
+
+
 	/** Задаёт маршруты для всех типов REST
 	 * @param string $route_mask Маршрут (маска)
 	 * @param mixed $action Связанное действие
