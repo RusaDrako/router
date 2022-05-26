@@ -21,14 +21,14 @@ class router_add extends router_core {
 			$val_route = explode('?', $_SERVER['REQUEST_URI'])[0];
 			if ($val_route[-1] != '/' ) {
 				if (!isset($_SERVER['REDIRECT_URL'])) {
-					$val_route .= '/';
+					$val_route   .= '/';
 				} else {
-					$val_route = $_SERVER['REDIRECT_URL'] . '/';
+					$val_route   = $_SERVER['REDIRECT_URL'] . '/';
 				}
 			}
-			$this->arr_router = \explode('/', $val_route);
+			$this->arr_router   = \explode('/', $val_route);
 		} else {
-			$this->arr_router = ['',''];
+			$this->arr_router   = ['',''];
 			$val_route = '/';
 		}
 		$this->set_route($val_route);
