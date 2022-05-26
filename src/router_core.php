@@ -139,7 +139,7 @@ class router_core {
 		$route_mask = $this->_normalization_route_name($route_mask);
 		$type = \strtoupper($type);
 		# Если тип запроса существует
-		if (isset($this->arr_router_settings[$type])) {
+		if (key_exists($type, $this->arr_router_settings)) {
 			# Заносим обработчик маршрута
 			$this->arr_router_settings[$type][$route_mask] = $action;
 		}
@@ -152,8 +152,8 @@ class router_core {
 	/** Выводит наименование уровня маршрута
 	 * @param int $num Номер уровня
 	 */
-	public function get_group($num = 1) {
-		if (isset($this->arr_router[$num])) {
+	public function get_group(int $num = 1) {
+		if (key_exists($num, $this->arr_router)) {
 			return $this->arr_router[$num];
 		} else {
 			return '';
@@ -333,14 +333,14 @@ class router_core {
 		# Переводим все буквы в верхний регистр
 		$type = \strtoupper($type);
 		# Если существует указанный метод
-		if (isset($this->router_default[$type])) {
+		if (\key_exists($type, $this->arr_router_settings)) {
 			# Заносим переменную в указанный тип
 			$this->router_default[$type] = $action;
 			# Возвращаем объект
 			return $this;
 		}
 		# Проходим по всем методам
-		foreach($this->router_default as $k => $v) {
+		foreach($this->arr_router_settings as $k => $v) {
 			# Заносим переменную в указанный тип
 			$this->router_default[$k] = $action;
 		}
