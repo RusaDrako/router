@@ -95,7 +95,7 @@ class router_core {
 	 * @param string $value Корневая папка для поиска классов
 	 */
 	public function set_root_folder(string $value) {
-		if ('/' != $value[-1]) {$value .= '/';}
+		if (\strlen($value) && '/' != $value[-1]) {$value .= '/';}
 		$this->root_folder   = $value;
 	}
 

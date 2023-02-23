@@ -15,8 +15,8 @@ class router_add extends router_core {
 
 	/** Задаём текущий маршрут по настройкам сервера */
 	public function set_server_setting() {
-		$this->set_root_folder($_SERVER['DOCUMENT_ROOT']);
-		$this->set_type_rest($_SERVER['REQUEST_METHOD']);
+		$this->set_root_folder($_SERVER['DOCUMENT_ROOT'] ?? '');
+		$this->set_type_rest($_SERVER['REQUEST_METHOD'] ?? '');
 		if (isset($_SERVER['REQUEST_URI'])) {
 			$val_route = explode('?', $_SERVER['REQUEST_URI'])[0];
 			if ($val_route[-1] != '/' ) {
