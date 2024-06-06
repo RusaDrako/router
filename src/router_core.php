@@ -22,7 +22,7 @@ class router_core {
 		'PATCH'     => [],
 		'DELETE'    => [],
 		'OPTIONS'   => [],
-		/*		'API'       => [],*/
+/*		'API'       => [],*/
 	];
 	/** Маршрут по умолчанию */
 	protected $router_default        = [];
@@ -172,7 +172,7 @@ class router_core {
 					$content   = $this->_router_output($v, $argv);
 					# Возвращаем результат
 					return $content;
-					# Маршрут возвращает ошибку
+				# Маршрут возвращает ошибку
 				} catch (exeption_route $e) {
 					# Генерируем ошибку
 					throw new exeption_route($k . ': ' . $e->getMessage(), 1);
@@ -183,7 +183,7 @@ class router_core {
 		# Вывод страницы по умолчанию
 		try {
 			return $this->_router_output($this->router_default[$this->method]);
-			# Самое последнее сообщение
+		# Самое последнее сообщение
 		} catch (exeption_route $e) {
 			return $e->getMessage();
 		}/**/
@@ -198,7 +198,7 @@ class router_core {
 			# Возвращаем пустое значение
 			throw new exeption_route('Нет связанного действия', 1);
 			exit;
-			# Если передана строка -> функция или метод
+		# Если передана строка -> функция или метод
 		} elseif (\is_string($value)) {
 			# Разбиваем строку на массив
 			$_arr_r           = explode('@', $value);
@@ -242,7 +242,7 @@ class router_core {
 			# Выполняем метод из контрольного маршрута с переданными аргументами
 			$content      = $method->invokeArgs($obj_object, $argv);
 			return $content;
-			# Обработка переданной функции
+		# Обработка переданной функции
 		} else {
 			# Начинаем обработку функции
 			$function   = new \ReflectionFunction($value);
@@ -335,8 +335,7 @@ class router_core {
 		# Проходим по элементам
 		foreach ($arr_mask as $k => $v) {
 			# Проверяем наличие переменной по наличию фигурных скобок
-			if ('{' == $v[0]
-				&& '}' == $v[-1]) {
+			if ('{'==$v[0] && '}'==$v[-1]) {
 				# Получаем ключ/имя переменной
 				$key         = \substr($v, 1, strlen($v)-2);
 				# Заносим ключ в массив
