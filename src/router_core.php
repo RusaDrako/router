@@ -10,7 +10,7 @@ namespace RusaDrako\router;
 class router_core {
 	use trait__arg;
 	/** Массив с элементами текущего маршрута */
-	protected $arr_router            = false;
+	protected $arr_router            = [];
 	/** Текущий маршрут */
 	protected $_route                = false;
 	/** Массив маршрутов по типам запросов */
