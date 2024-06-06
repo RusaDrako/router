@@ -22,7 +22,7 @@ class router_core {
 		'PATCH'     => [],
 		'DELETE'    => [],
 		'OPTIONS'   => [],
-/*		'API'       => [],*/
+		/*		'API'       => [],*/
 	];
 	/** Маршрут по умолчанию */
 	protected $router_default        = [];
@@ -36,16 +36,11 @@ class router_core {
 
 
 
-
-
-
 	/** Загрузка класса */
 	function __construct () {
 		$this->router_default   = $this->arr_router_settings;
 		$this->add_default(false);
 	}
-
-
 
 
 
@@ -67,16 +62,14 @@ class router_core {
 
 
 	/** Вызов объекта класса
-	* @return object Объект модели
-	*/
+	 * @return object Объект модели
+	 */
 	public static function call() {
 		if (null === self::$_object) {
 			self::$_object = new static();
 		}
 		return self::$_object;
 	}
-
-
 
 
 
@@ -89,8 +82,6 @@ class router_core {
 
 
 
-
-
 	/** Задаёт корневую папку классов
 	 * @param string $value Корневая папка для поиска классов
 	 */
@@ -98,8 +89,6 @@ class router_core {
 		if (\strlen($value) && '/' != $value[-1]) {$value .= '/';}
 		$this->root_folder   = $value;
 	}
-
-
 
 
 
@@ -115,16 +104,12 @@ class router_core {
 
 
 
-
-
 	/** Задаёт текущий тип REST
 	 * @param string $value Текущий тип REST
 	 */
 	public function set_type_rest(string $value) {
 		$this->method   = \strtoupper($value);
 	}
-
-
 
 
 
@@ -146,8 +131,6 @@ class router_core {
 
 
 
-
-
 	/** Выводит наименование уровня маршрута
 	 * @param int $num Номер уровня
 	 */
@@ -158,8 +141,6 @@ class router_core {
 			return '';
 		}
 	}
-
-
 
 
 
@@ -191,10 +172,10 @@ class router_core {
 					$content   = $this->_router_output($v, $argv);
 					# Возвращаем результат
 					return $content;
-				# Маршрут возвращает ошибку
-				} catch (\Exception $e) {
+					# Маршрут возвращает ошибку
+				} catch (exeption_route $e) {
 					# Генерируем ошибку
-					throw new \Exception($k . ': ' . $e->getMessage(), 1);
+					throw new exeption_route($k . ': ' . $e->getMessage(), 1);
 					exit;
 				}
 			}
@@ -202,13 +183,11 @@ class router_core {
 		# Вывод страницы по умолчанию
 		try {
 			return $this->_router_output($this->router_default[$this->method]);
-		# Самое последнее сообщение
-		} catch (\Exception $e) {
+			# Самое последнее сообщение
+		} catch (exeption_route $e) {
 			return $e->getMessage();
 		}/**/
 	}
-
-
 
 
 
@@ -217,9 +196,9 @@ class router_core {
 		# Если переменная пустая
 		if (!$value) {
 			# Возвращаем пустое значение
-			throw new \Exception('Нет связанного действия', 1);
+			throw new exeption_route('Нет связанного действия', 1);
 			exit;
-		# Если передана строка -> функция или метод
+			# Если передана строка -> функция или метод
 		} elseif (\is_string($value)) {
 			# Разбиваем строку на массив
 			$_arr_r           = explode('@', $value);
@@ -234,7 +213,7 @@ class router_core {
 				# Если файл отсутстует
 				if (!\file_exists($full_file_name)) {
 					# Возвращаем сообщение
-					throw new \Exception('Отсутствует файл класса ' . $file_name, 1);
+					throw new exeption_route('Отсутствует файл класса ' . $file_name, 1);
 					exit;
 				}
 				# Подгружаем файл класса
@@ -243,7 +222,7 @@ class router_core {
 			# Если класс отсутстует
 			if (!\class_exists($class_name)) {
 				# Возвращаем сообщение
-				throw new \Exception('Отсутствует класс ' . $class_name, 1);
+				throw new exeption_route('Отсутствует класс ' . $class_name, 1);
 				exit;
 			}
 			# Формируем имя метода
@@ -251,7 +230,7 @@ class router_core {
 			# Если метод отсутстует
 			if (!\method_exists($class_name , $method_name)) {
 				# Возвращаем сообщение
-				throw new \Exception('Отсутствует метод класса ' . $class_name . ' ---> ' . $method_name, 1);
+				throw new exeption_route('Отсутствует метод класса ' . $class_name . ' ---> ' . $method_name, 1);
 				exit;
 			}
 			# Начинаем обработку функции
@@ -263,7 +242,7 @@ class router_core {
 			# Выполняем метод из контрольного маршрута с переданными аргументами
 			$content      = $method->invokeArgs($obj_object, $argv);
 			return $content;
-		# Обработка переданной функции
+			# Обработка переданной функции
 		} else {
 			# Начинаем обработку функции
 			$function   = new \ReflectionFunction($value);
@@ -275,11 +254,9 @@ class router_core {
 			# Возвращаем true
 		}
 		# Возвращаем false
-		throw new \Exception(null, 1);
+		throw new exeption_route(null, 1);
 		exit;
 	}
-
-
 
 
 
@@ -322,8 +299,6 @@ class router_core {
 
 
 
-
-
 	/** Задаёт страницу по умолчанию
 	 * @param mixed $action Связанное действие
 	 * @param string $type Тип REST
@@ -349,8 +324,6 @@ class router_core {
 
 
 
-
-
 	/** Формирует регулярное выражение */
 	protected function _create_reg($mask) {
 		# Получаем маску маршрута
@@ -363,7 +336,7 @@ class router_core {
 		foreach ($arr_mask as $k => $v) {
 			# Проверяем наличие переменной по наличию фигурных скобок
 			if ('{' == $v[0]
-					&& '}' == $v[-1]) {
+				&& '}' == $v[-1]) {
 				# Получаем ключ/имя переменной
 				$key         = \substr($v, 1, strlen($v)-2);
 				# Заносим ключ в массив
@@ -395,9 +368,9 @@ class router_core {
 		return $result;
 	}
 
-
-
-
-
 /**/
 }
+
+
+
+class exeption_route extends \Exception {}
